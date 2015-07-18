@@ -4,3 +4,5 @@ Mathematical functions written in goLang:
 * Mean
 * Standard Deviation
 * Correlation Co-effecient
+* Manhattan Distance
+* Euclidean Distance

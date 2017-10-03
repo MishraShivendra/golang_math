@@ -6,3 +6,4 @@ Mathematical functions written in goLang:
 * Correlation Co-effecient
 * Manhattan Distance
 * Euclidean Distance
+* Chebyshev Distance

@@ -1,9 +1,12 @@
+/*
+ * Compiled with go version go1.9 linux/amd64
+ */
 package main
 
 import (
 	"fmt"
-	"os"
 	"math"
+	"os"
 )
 
 /* Following function computes
@@ -19,7 +22,7 @@ func compute_mean(data_points []float32) float32 {
 	for i = 0; i < number_of_elements; i++ {
 		sum = sum + data_points[i]
 	}
-	return (sum /float32 (number_of_elements))
+	return (sum / float32(number_of_elements))
 }
 
 /* Following function computes standard
@@ -31,16 +34,16 @@ func compute_std_deviation(data_points []float32) float32 {
 		i                  int
 		mean               float32
 		data_point_dev     []float32
-		std_div,temp       float32
+		std_div, temp      float32
 	)
-	number_of_elements=len(data_points)
-	data_point_dev=make([]float32,number_of_elements)
+	number_of_elements = len(data_points)
+	data_point_dev = make([]float32, number_of_elements)
 	/*Calculate mean of the data points*/
 	mean = compute_mean(data_points)
 	/*Calculate standard deviation of individual data points*/
 	for i = 0; i < number_of_elements; i++ {
-		temp=data_points[i]-mean
-		data_point_dev[i] = (temp*temp)
+		temp = data_points[i] - mean
+		data_point_dev[i] = (temp * temp)
 	}
 
 	/* Finally, Compute standard Deviation of data points
@@ -57,10 +60,9 @@ func covariance(data_point_x []float32, data_point_y []float32) float32 {
 	var (
 		i      int
 		len_x  int
-		len_y  int
 		mean_x float32
 		mean_y float32
-		sum float32
+		sum    float32
 	)
 	/*Check number of data points*/
 	len_x = len(data_point_x)
@@ -93,37 +95,59 @@ func compute_corelation_coeffecient(data_point_x []float32, data_point_y []float
 	return (covariance_x_y / (std_div_x * std_div_y))
 }
 
-
-/* Function computes Manhattan distance between two data sets*/
+/* Function computes Manhattan distance between two data sets */
 func compute_manhattan_distance(data_point_x, data_point_y []float32) float32 {
 	var i int
-	var sum int
+	var sum float32
 	if len(data_point_x) != len(data_point_y) {
-		fmt.Println("Both data sets must be equal in numbers!");
-		os.Exit(1);
+		fmt.Println("Both data sets must be equal in numbers!")
+		os.Exit(1)
 	}
-	for i;i<len(data_point_x);i++ {
-		sum=sum+float32(math.Abs(float64(data_point_x[i])-float64(data_point_y[i])))
+	for i = 0; i < len(data_point_x); i++ {
+		sum = sum + float32(math.Abs(float64(data_point_x[i])-float64(data_point_y[i])))
 	}
 	return sum
 }
-/*Function Calculates Euclidean distance between two data sets*/
+
+/* Function Calculates Euclidean distance
+ * between two data sets
+ */
 func compute_Euclidean_distance(data_point_x, data_point_y []float32) float32 {
 	var i int
-	var sum int
+	var sum float32
 	if len(data_point_x) != len(data_point_y) {
-		fmt.Println("Both data sets must be equal in numbers!");
-		os.Exit(1);
+		fmt.Println("Both data sets must be equal in numbers!")
+		os.Exit(1)
 	}
-	for i;i<len(data_point_x);i++ {
-		sum=sum+((data_point_x[i]-data_point_y[i])*(data_point_x[i]-data_point_y[i]))
+	for i = 0; i < len(data_point_x); i++ {
+		sum = sum + ((data_point_x[i] - data_point_y[i]) * (data_point_x[i] - data_point_y[i]))
 	}
-	return math.Sqrt(sum)
+	return float32(math.Sqrt(float64(sum)))
+}
+
+/* Compute Chebyshev distance between two data points */
+func compute_Chebyshev_distance(data_point_x, data_point_y []float32) float32 {
+	var (
+		distance float32
+		i        int
+	)
+	if len(data_point_x) != len(data_point_y) {
+		fmt.Println("Data points must be equal!")
+		os.Exit(1)
+	}
+	distance = 0
+	for i = 0; i < len(data_point_y); i++ {
+		if distance < float32(math.Abs(float64(data_point_x[i]-data_point_y[i]))) {
+			distance = float32(math.Abs(float64(data_point_x[i] - data_point_y[i])))
+		}
+	}
+	return distance
 }
 
 func main() {
-	data_point_a:= []float32{2,4,4,4,5,5,7,9}
-	data_point_b:= []float32{2,4,4,4,5,5,7,1}
+	data_point_a := []float32{2, 4, 4, 4, 5, 5, 7, 9}
+	data_point_b := []float32{2, 4, 4, 4, 5, 5, 7, 1}
 	fmt.Println("Standard Deviation:", compute_std_deviation(data_point_a))
-	fmt.Println("Correlation Coeffiecent:", compute_corelation_coeffecient(data_point_a,data_point_b))
+	fmt.Println("Chebyshev Distance:", compute_Chebyshev_distance(data_point_a, data_point_b))
+	fmt.Println("Correlation Coeffiecent:", compute_corelation_coeffecient(data_point_a, data_point_b))
 }
